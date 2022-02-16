@@ -1,0 +1,24 @@
+definitions:
+  caches:
+    venv: venv
+  steps:
+    - step: &setup-and-run-tests
+        name: Setup and Run Tests
+        image: python:3.8.12-bullseye
+        caches:
+          - venv
+        script:
+          - mkdir -p venv && python3 -m venv venv && source venv/bin/activate
+          - pip install -v -r requirements.txt && pip install transformers
+          - python setup.py develop
+          - python -c "import nltk; nltk.download('punkt')"
+          - python -m pytest -m unit
+
+
+pipelines:
+  branches:
+    main:
+      - step: *setup-and-run-tests
+  pull-requests:
+    '**':
+      - step: *setup-and-run-tests

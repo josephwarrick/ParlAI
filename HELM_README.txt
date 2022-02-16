@@ -32,3 +32,8 @@ That is, after installing the necessary packages, the directory containing the p
 
 We could build the entire build/install/test process around docker images (that might be my first preference anyway), but the setup of the propmt seemed to imply that you wanted CI set up sepearately from a docker build.
 - bitbucket only allows 50 minutes of build time per month, until you start paying $15 or more per month. This seems really low compared to i.e. github, which allows 2,000 minutes of build time per month before needing to pay.
+
+### Notes on the dockerfile
+- I chose to use a standard python base image. I know it's popular to use a lightweight base, like a `-slim` or `-alpine` based image, but I don't know how or where this image will be used, so I'm assuming that size of the final image isn't as important as flexibility of the image. Often, when I've used smaller base images, I end up changing them anyway when I need some custom code to compile later.
+- There's no `RUN` command defined in the docker image. Again, I'm not sure what we'll be using the image for, an we can always specify the command at runtime anyway.
+- I haven't added anything to the .dockerignore file. Again, I'm defaulting to the assumption that we shouldn't care about the size of the final docker image until we have a reason to care.

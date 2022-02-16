@@ -1,0 +1,15 @@
+FROM python:3.8.12-bullseye
+
+WORKDIR /opt/ParlAI
+
+COPY requirements.txt /opt/ParlAI
+
+RUN pip install -r requirements.txt \
+ && pip install transformers \
+ && python setup.py develop \
+ && python -c "import nltk; nltk.download('punkt')"
+
+COPY . /opt/ParlAI
+
+
+
